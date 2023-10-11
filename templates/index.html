@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--url_for for finding an exact location-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <!--title-->
+    <title>Document</title>
+   
+</head>
+<body>
+    <!-------------------weather with input----------------->
+    <h1 class="big_title">WEATHER</h1>
+    <div class="container1">
+        <input placeholder="city" id="cityInput">
+        <div id="Progress_Status"> 
+            <div id="myprogressBtn" class="btn">search</div>
+        </div>
+    </div>
+    <div id="weathr_result"></div>
+
+    <!-------------------weather without input----------------->
+    <h1 class="big_title">The weather with location</h1>
+    <div class="container">
+        
+        <div class="check_btn">
+            <span>check the weather : </span>
+            <div id="Progress_Status2"> 
+                <div id="weath-btn" class="btn">get the weather </div>
+            </div>
+        </div>
+        <h4 id="title"></h4>
+        <div id="wea_result"></div>
+    </div>
+
+    <!-------------------nwes----------------->
+    <h1 class="big_title">NEWS FROM BBC</h1>
+    {% for post in new_data %}
+        <article class="media content-section">
+            <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="https://www.bbc.com/nwes">{{ post.url }}</a>
+                <small class="text-muted">{{ post.source }}</small>
+            </div>
+            <h3>{{ post.title }}</h3>
+            </div>
+        </article>
+    {% endfor %} 
+    
+
+<!-- Optional JavaScript -->
+ 
+        <script>
+            //////////////program with input 
+            const weather_button = document.getElementById("myprogressBtn").addEventListener('click', (e) => {
+                const city = document.getElementById('cityInput').value;
+                ///////////progress buttom
+                var element = document.getElementById("myprogressBtn");    
+                var width = 1; 
+                var identity = setInterval(scene, 10); 
+                function scene() { 
+                    if (width >= 100) { 
+                    clearInterval(identity); 
+                    } else { 
+                    width++;  
+                    element.style.width = width + '%';  
+                    } 
+                } 
+                 ///////if the input is empty           
+                if (!city.trim()) {
+                    document.getElementById('weathr_result').innerHTML = "Please enter a city name.";
+                    return; // Exit the function without making the API request
+                }
+                else{ 
+                    const response = fetch("/weather?city=" + city)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.found === true){
+                                const weatherDat = `
+                                    <p>City: ${data.data.weather}, ${data.data.desc} </p>
+                                    <p>Temperature: ${data.data.temp}°C</p>
+                                    <p>Humidity: ${data.data.humidity}%</p>
+                                `;
+                                document.getElementById('weathr_result').innerHTML = weatherDat;
+                            }
+                            else {
+                                document.getElementById('weathr_result').innerHTML = `City not found`;
+                            } 
+                        
+                        })
+                        .catch(err => document.getElementById('weathr_result').innerHTML = `Error fetching weather.`);
+                        
+                }
+            })
+
+            //////////////program without input just find the location then get weather data
+            
+
+            const weath_button = document.getElementById("weath-btn").addEventListener('click', (e) => {
+                const title2 = document.getElementById("title")
+
+                //////////////progress buttom
+                var element = document.getElementById("weath-btn");    
+                var width = 1; 
+                var identity = setInterval(scene, 10); 
+                function scene() { 
+                    if (width >= 100) { 
+                    clearInterval(identity); 
+                    } else { 
+                    width++;  
+                    element.style.width = width + '%';  
+                    } 
+                } 
+                //////////////////get location
+                const success = (position) => {
+                    console.log(position)
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                
+                    const geoUrl =`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en` 
+                    
+                    console.log(geoUrl)
+                    const response  = fetch(geoUrl)
+                    .then(response  => response.json())
+                    .then(data => {
+                        title2.innerHTML = `The weather in ${data.city} :`
+                        const res = fetch("/weather?city=" + data.city)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.found === true){
+                                const weatherDat = `
+                                    <p>City: ${data.data.weather}, ${data.data.desc} </p>
+                                    <p>Temperature: ${data.data.temp}°C</p>
+                                    <p>Humidity: ${data.data.humidity}%</p>
+                                `;
+                                document.getElementById('wea_result').innerHTML = weatherDat;
+                            }
+                            else {
+                                
+                                document.getElementById('wea_result').innerHTML = `City not found`;
+                            } 
+                        
+                        })
+                        .catch(err => console.log(err));
+                    })
+                }
+                const error = () => {
+                    locate_pst.textContent = 'Unable to retrieve your location';
+                }
+                navigator.geolocation.getCurrentPosition(success, error)
+            })
+            
+        </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    
+
+</body>
+</html>

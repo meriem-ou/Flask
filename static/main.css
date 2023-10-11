@@ -1,0 +1,143 @@
+body {
+    background: #fafafa;
+    color: #000000;
+    margin-top: 5rem;
+  }
+  
+  .big_title{
+    margin: 0 0 25px 20px;
+    padding: 0 0 0px 5px;
+    color: #5a112f;
+    border-left: 4px solid #da2964;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #444444;
+  }
+  
+  .bg-steel {
+    background-color: #da2964;
+  }
+  
+  .site-header .navbar-nav .nav-link {
+    color: #5a112f;
+    font-size: 18px;
+  }
+  
+  .site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+  }
+  
+  .site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+  }
+  
+  .content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+  
+  .article-title {
+    color: #d62a2a;
+  }
+  
+  a.article-title:hover {
+    color: #da2964;
+    text-decoration: none;
+  }
+  
+  .article-content {
+    white-space: pre-line;
+  }
+  
+  .article-img {
+    height: 65px;
+    width: 65px;
+    margin-right: 16px;
+  }
+  
+  .article-metadata {
+    padding-bottom: 1px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e3e3e3
+  }
+  .article-metadata a {
+    color: #e21717;
+    text-decoration: none;
+  }
+  .article-metadata a:hover {
+    color: #ad0101;
+    text-decoration: none;
+  }
+  
+  .article-svg {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+  }
+  
+  .account-img {
+    height: 125px;
+    width: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .account-heading {
+    font-size: 2.5rem;
+  }
+
+  /*.container-fluid .btn {
+    cursor: pointer;
+    background-color: #da2964;
+    color: white;
+  }*/
+
+  .check_btn{
+    padding-bottom: 20px;
+  }
+
+  /*************style progress buttom*********/
+  .container1 { 
+    display: flex;
+    flex-direction: row;
+    padding-left: 30px;
+    padding-bottom: 30px;
+  } 
+  #Progress_Status{
+    position: relative;
+    background-color: #ff95b8c2; 
+    width: 9%; 
+  }
+  #Progress_Status .btn{
+    background-color: #da2964;
+    border: none;
+    width: 100%;
+ }
+ #weathr_result{
+  padding-left: 40px;
+  padding-bottom: 30px;
+ }
+ #Progress_Status2{
+  position: relative;
+  background-color: #ff95b8c2; 
+  width: 20%; 
+}
+#Progress_Status2 .btn{
+  background-color: #da2964;
+  border: none;
+  width: 100%;
+}
+.check_btn{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+    
+ 
+  
+
+
